@@ -10,8 +10,6 @@ app.use(cors())
 app.use(express.json());
 
 // database
-
-
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.quvfnqg.mongodb.net/?retryWrites=true&w=majority`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -28,10 +26,17 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
 
+    // Establish connection to db named hypertouchDB
+    const hypertouchCollection = client.db("hypertouchDB").collection("products");
+     
+
     // all post request
+    // for inserting data into database
     app.post('/products', async (req, res) => {
         const newProduct = req.body;
         console.log(newProduct)
+        const result = await hypertouchCollection.insertOne(newProduct);
+        res.send(result); 
     })
 
 
@@ -39,6 +44,13 @@ async function run() {
 
 
     // all get request
+    // for reading data from database
+    app.get('/products', async (req, res) => {
+        const cursor = hypertouchCollection.find({});
+        const result = await cursor.toArray();
+        res.send(result);
+    })
+
     // all put request
     // all delete request
 

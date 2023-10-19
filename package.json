@@ -1,0 +1,18 @@
+{
+  "name": "hypertouch-server",
+  "version": "1.0.0",
+  "description": "hypertouch is a fashion e-commerce website. This is the server side code of the website.",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "farhanshahriyar",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "mongodb": "^6.1.0"
+  }
+}

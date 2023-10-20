@@ -29,6 +29,7 @@ async function run() {
     // Establish connection to db named hypertouchDB
     const hypertouchCollection = client.db("hypertouchDB").collection("products"); // for products
     const hypertouchCollection2 = client.db("hypertouchDB").collection("contacts"); // for contacts
+    const hypertouchCollection3 = client.db("hypertouchDB").collection("refund"); // for refund
      
 
     // all post request
@@ -46,6 +47,14 @@ async function run() {
         console.log(newContact)
         const result = await hypertouchCollection2.insertOne(newContact);
         res.send(result); 
+    })
+
+    // for inserting data into database for refund
+    app.post('/refund', async (req, res) => {
+        const newRefund = req.body;
+        console.log(newRefund)
+        const result = await hypertouchCollection3.insertOne(newRefund);
+        res.send(result);
     })
 
 

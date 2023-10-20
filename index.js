@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 require('dotenv').config();
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const port = process.env.PORT || 5000;
 
 // middleware
@@ -27,12 +27,12 @@ async function run() {
     await client.connect();
 
     // Establish connection to db named hypertouchDB
-    const hypertouchCollection = client.db("hypertouchDB").collection("products");
-    const hypertouchCollection2 = client.db("hypertouchDB").collection("contacts");
+    const hypertouchCollection = client.db("hypertouchDB").collection("products"); // for products
+    const hypertouchCollection2 = client.db("hypertouchDB").collection("contacts"); // for contacts
      
 
     // all post request
-    // for inserting data into database
+    // for inserting data into database for products
     app.post('/products', async (req, res) => {
         const newProduct = req.body;
         console.log(newProduct)
@@ -40,6 +40,7 @@ async function run() {
         res.send(result); 
     })
 
+    // for inserting data into database for contacts
     app.post('/contacts', async (req, res) => {
         const newContact = req.body;
         console.log(newContact)
@@ -57,8 +58,24 @@ async function run() {
         res.send(result);
     })
 
+    // for reading single data from database
+    app.get('/products/:id', async (req, res) => {
+        const id = req.params.id;
+        const query = {_id: new ObjectId(id)};
+        const result = await hypertouchCollection.findOne(query);
+        res.send(result);
+    })
+
     // all put request
+    
     // all delete request
+    // for deleting data from database
+    app.delete('/products/:id', async (req, res) => {
+        const id = req.params.id;
+        const query = {_id: new ObjectId(id)};
+        const result = await hypertouchCollection.deleteOne(query);
+        res.send(result);
+    })
 
 
 

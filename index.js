@@ -80,6 +80,31 @@ async function run() {
     })
 
     // all put request
+    // for updating data from database
+    app.put('/products/:id', async (req, res) => {
+      const id = req.params.id;
+      const updatedProduct = req.body;
+      const filter = {_id: new ObjectId(id)};
+      const options = { upsert: true };
+      const updateDoc = {
+        $set: {
+          name: updatedProduct.name,
+          highlights: updatedProduct.highlights,
+          supplier: updatedProduct.supplier,
+          price: updatedProduct.price,
+          size: updatedProduct.size,
+          color: updatedProduct.color,
+          category: updatedProduct.category,
+          details: updatedProduct.details,
+          img1: updatedProduct.img1,
+          img2: updatedProduct.img2,
+          img3: updatedProduct.img3,
+          img4: updatedProduct.img4
+        },
+      }
+      const result = await hypertouchCollection.updateOne(filter, updateDoc, options);
+      res.send(result);
+    })
     
     // all delete request
     // for deleting data from database

@@ -3,6 +3,7 @@ const cors = require('cors');
 const app = express();
 require('dotenv').config();
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
+// const { ObjectId } = require('bson');
 const port = process.env.PORT || 5000;
 
 // middleware
@@ -70,6 +71,9 @@ async function run() {
     // for reading single data from database
     app.get('/products/:id', async (req, res) => {
         const id = req.params.id;
+        if (!ObjectId.isValid(id)) {
+          return res.status(400).send({ error: 'Invalid ID format.' });
+      }
         const query = {_id: new ObjectId(id)};
         const result = await hypertouchCollection.findOne(query);
         res.send(result);
